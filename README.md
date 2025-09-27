@@ -1,2 +1,5 @@
-# embeddings-101
-What are Embeddings? How Do I use them?
+# Embeddings 101
+
+LLMs are a hot topic, and embeddings run LLM and RAG applications.
+
+## Embed Services
