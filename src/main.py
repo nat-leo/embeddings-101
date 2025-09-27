@@ -1,15 +1,12 @@
-import os
-from typing import List, Optional
-import numpy as np
 from fastapi import FastAPI, HTTPException
+import numpy as np
+import os
 from pydantic import BaseModel, Field
 
-# Lazy import so container startup is snappy before first request
 from sentence_transformers import SentenceTransformer
-import torch
 
 MODEL_NAME = os.environ.get("MODEL_NAME", "sentence-transformers/paraphrase-MiniLM-L3-v2")
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = "cpu"
 
 app = FastAPI(title="Embeddings Server", version="1.0.0", docs_url="/")
 
@@ -26,15 +23,15 @@ def get_model():
     return _model
 
 class EmbedRequest(BaseModel):
-    inputs: List[str] = Field(..., description="Texts to embed")
+    inputs: list[str] = Field(..., description="Texts to embed")
     normalize: bool = True
     batch_size: int = Field(32, ge=1, le=1024)
-    max_length: Optional[int] = Field(
+    max_length: int | None = Field(
         None, description="Optional hard truncate (tokens) if model supports it"
     )
 
 class EmbedResponse(BaseModel):
-    embeddings: List[List[float]]
+    embeddings: list[list[float]]
     model: str
     dim: int
     normalized: bool
