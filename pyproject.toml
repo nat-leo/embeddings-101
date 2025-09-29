@@ -6,12 +6,13 @@ build-backend = "setuptools.build_meta"
 name = "embeddings-server"
 version = "0.1.0"
 description = "Fast and Light Text Embedder"
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 dependencies = [
   "fastapi",
   "uvicorn",
   "numpy",
-  "sentence-transformers"
+  "sentence-transformers",
+  "transformers",
 ]
 
 [tool.pytest.ini_options]
