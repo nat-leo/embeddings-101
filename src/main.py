@@ -13,9 +13,9 @@ model = OpenAiEmbed(MODEL_NAME)
 # --- Request schema ---
 class EmbeddingsRequest(BaseModel):
     model: str | None = None
-    input: str | list[str]
+    data: str | list[str]
 
 # Tell FastAPI the response schema + return the precise type
 @app.post("/v1/embeddings", response_model=EmbeddingsResponse)
 def embed(req: EmbeddingsRequest) -> EmbeddingsResponse:
-    return model.create(input=req.input, model=req.model)
+    return model.create(data=req.data, model=req.model)
