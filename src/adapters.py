@@ -12,6 +12,7 @@ from transformers import AutoTokenizer
 
 class EmbeddingObject(TypedDict):
     object: Literal["embedding"]
+    text: str
     embedding: list[float]
     index: int
 
@@ -57,8 +58,8 @@ class OpenAiEmbed:
         enc = self.tokenizer(texts, add_special_tokens=True, padding=False, truncation=False)
         return sum(len(ids) for ids in enc["input_ids"])
 
-    def create(self, input: str | list[str], model: str | None = None) -> EmbeddingsResponse:
-        texts = self._to_batch(input)
+    def create(self, data: str | list[str], model: str | None = None) -> EmbeddingsResponse:
+        texts = self._to_batch(data)
 
         # Compute embeddings
         vecs = self.model.encode(
@@ -72,6 +73,7 @@ class OpenAiEmbed:
         for i, v in enumerate(vecs):
             data.append({
                 "object": "embedding",
+                "text": texts[i],
                 "embedding": v.tolist(),  # JSON-serializable list[float]
                 "index": i,
             })
